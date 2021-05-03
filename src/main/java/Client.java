@@ -72,30 +72,36 @@ public class Client {
                     if (UDPMultiReceiveHandler != null) {
                         UDPMultiReceiveHandler.shutdown();
                     }
+                    try {
+                        sendPUT("removeNode", sAddress);
+                    }catch (IOException err) {err.printStackTrace();}
                     Client.running = false;
                     break;
+
                 case "help":
                     System.out.println("List of all commands:");
                     System.out.println("Leave network: 'Exit'");
-                    System.out.println("Get hashMap of nodes on server: 'getMap'");
-                    System.out.println("Get hashMap of files on server: 'getFileMap'");
+                    System.out.println("Add a node: 'addNode'");
+                    System.out.println("Get ID of a node: 'getID'");
                     System.out.println("Add file to server: 'addFile'");
-                    System.out.println("Get owner of file on server: 'getFileOwner'");
+                    System.out.println("Find ID of host where file is saved: 'searchFile'");
                     break;
 
-                case "getMap":
+                case "addNode":
                     try {
-                        sendGET("getMap",sAddress);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println("Give the name of the node to be added: ");
+                        String name = sc.nextLine();
+                        sendPUT("addNode/"+name,sAddress);
+                    } catch (IOException err) {
+                        err.printStackTrace();
                     }
                     break;
 
-                case "getFileMap":
+                case "getID":
                     try {
-                        sendGET("getFileMap",sAddress);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        sendGET("getID",sAddress);
+                    } catch (IOException err) {
+                        err.printStackTrace();
                     }
                     break;
 
@@ -104,18 +110,18 @@ public class Client {
                     String name = sc.nextLine();
                     try {
                         sendPUT("addFile/"+name,sAddress);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } catch (IOException err) {
+                        err.printStackTrace();
                     }
                     break;
 
-                case "getFileOwner":
+                case "searchFile":
                     System.out.println("Give the name of the file you want to find the owner of: ");
                     name = sc.nextLine();
                     try {
-                        sendGET("getFileOwner/"+name,sAddress);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        sendGET("searchFile/"+name,sAddress);
+                    } catch (IOException err) {
+                        err.printStackTrace();
                     }
                     break;
 
@@ -125,10 +131,7 @@ public class Client {
         }
         System.out.println("Quiting program, till next time!");
         System.exit(0);
-
-
     }
-
 
     public static int hashCode(String input){
         long max = 2147483647;
