@@ -2,8 +2,9 @@ import org.w3c.dom.events.EventException;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
-import static java.lang.StrictMath.abs;
 
 public class Client {
 
@@ -81,20 +82,9 @@ public class Client {
                 case "help":
                     System.out.println("List of all commands:");
                     System.out.println("Leave network: 'Exit'");
-                    System.out.println("Add a node: 'addNode'");
                     System.out.println("Get ID of a node: 'getID'");
-                    System.out.println("Add file to server: 'addFile'");
+                    System.out.println("Add file to client: 'addFile'");
                     System.out.println("Find ID of host where file is saved: 'searchFile'");
-                    break;
-
-                case "addNode":
-                    try {
-                        System.out.println("Give the name of the node to be added: ");
-                        String name = sc.nextLine();
-                        sendPUT("addNode/"+name,sAddress);
-                    } catch (IOException err) {
-                        err.printStackTrace();
-                    }
                     break;
 
                 case "getID":
@@ -271,13 +261,10 @@ public class Client {
                 sendUnicast("I ["+Client.currentNodeID+"], have put you as my previousNode",hostAddress);
             }
         }
-        System.out.println("----------------------------------------------------");
-        System.out.println("Other nodes in the network: "+Client.amountOtherNodes);
+        System.out.println("\nOther nodes in the network: "+Client.amountOtherNodes);
         System.out.println("Previous ID: " + Client.previousNodeID + " || Current ID: "+Client.currentNodeID+" || Next ID: " + Client.nextNodeID);
         System.out.println("Give a command: <help> for a list of all commands");
-        System.out.println("----------------------------------------------------");
     }
-
     public static void updateInitial(String message) {
         //VB message: 3
         //VB message: 3, Previous ID: 68465, Next ID: 321846
@@ -298,11 +285,9 @@ public class Client {
         }
         else
             Client.amountOtherNodes = Integer.parseInt(message);
-        System.out.println("----------------------------------------------------");
-        System.out.println("Other nodes in the network: "+Client.amountOtherNodes);
+        System.out.println("\nOther nodes in the network: "+Client.amountOtherNodes);
         System.out.println("Previous ID: " + Client.previousNodeID + " || Current ID: "+Client.currentNodeID+" || Next ID: " + Client.nextNodeID);
         System.out.println("Give a command: <help> for a list of all commands");
-        System.out.println("----------------------------------------------------");
     }
 
     public static void exitUpdateNext(String message) {
@@ -313,11 +298,9 @@ public class Client {
         exitID = message.substring(index+1);
         System.out.println(exitID+" sends exit, updating nextNodeID to : "+newID);
         Client.nextNodeID = Integer.parseInt(newID);
-        System.out.println("----------------------------------------------------");
-        System.out.println("Other nodes in the network: "+Client.amountOtherNodes);
+        System.out.println("\nOther nodes in the network: "+Client.amountOtherNodes);
         System.out.println("Previous ID: " + Client.previousNodeID + " || Current ID: "+Client.currentNodeID+" || Next ID: " + Client.nextNodeID);
         System.out.println("Give a command: <help> for a list of all commands");
-        System.out.println("----------------------------------------------------");
     }
 
     public static void exitUpdatePrev(String message) {
@@ -328,11 +311,9 @@ public class Client {
         exitID = message.substring(index+1);
         System.out.println(exitID+" sends exit, updating previousNodeID to : "+newID);
         Client.nextNodeID = Integer.parseInt(newID);
-        System.out.println("----------------------------------------------------");
-        System.out.println("Other nodes in the network: "+Client.amountOtherNodes);
+        System.out.println("\nOther nodes in the network: "+Client.amountOtherNodes);
         System.out.println("Previous ID: " + Client.previousNodeID + " || Current ID: "+Client.currentNodeID+" || Next ID: " + Client.nextNodeID);
         System.out.println("Give a command: <help> for a list of all commands");
-        System.out.println("----------------------------------------------------");
     }
 
 }
