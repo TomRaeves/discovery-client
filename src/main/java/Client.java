@@ -11,7 +11,7 @@ public class Client {
     private static final int receivePort = 4500;
     private static final int sendPort = 4501;
     private static final int multiCastPort = 3456;
-    private static final String multicastAddress = "10.0.0.100"; //Dit moet nog specifiek worden
+    private static final String multicastAddress = "230.0.0.100"; //Dit moet nog specifiek worden
 
     private static int amountOtherNodes = -1;
 
