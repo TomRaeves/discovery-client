@@ -2,8 +2,6 @@ import org.w3c.dom.events.EventException;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class Client {
@@ -29,7 +27,7 @@ public class Client {
         System.out.println("Choose your hostname: ");
         String hostName = sc.nextLine();
         //hostID
-        Client.currentNodeID = hashCode(hostName); //read the name and then hash the name
+        Client.currentNodeID = hashCode(hostName); //read the name and then hash the name ////this is point 5b of Discovery and Bootstrap
         Client.nextNodeID = Client.currentNodeID;
         Client.previousNodeID = Client.currentNodeID;
         //ServerIP
@@ -57,7 +55,7 @@ public class Client {
             UDPMultiReceiveHandler.start();
         }
 
-        //DISCOVERY
+        //DISCOVERY   //This is point 3 of Discovery and Bootstrap
         try {
             sendMultiCast("Start,"+hostName, InetAddress.getByName(Client.multicastAddress));
         } catch (IOException e) {
@@ -123,7 +121,7 @@ public class Client {
         System.exit(0);
     }
 
-    public static int hashCode(String input){
+    public static int hashCode(String input){ //This is point 2 of Discovery and Bootstrap
         long max = 2147483647;
         long min = -2147483647;
 
@@ -173,7 +171,7 @@ public class Client {
         }
     }
 
-    private static void sendMultiCast(String message, InetAddress address){
+    private static void sendMultiCast(String message, InetAddress address){  //This is point 1 of Discovery and Bootstrap
         System.out.println("Sending multicast: ["+address+"]: "+message);
         if (message != null) {
             MulticastSocket UDPSocket = null; //create new socket
@@ -220,6 +218,8 @@ public class Client {
             }
         }
     }
+
+    //this is point 5c-d of Discovery and Bootstrap
 
     public static void update(int id, InetAddress hostAddress) {
         Client.amountOtherNodes = Client.amountOtherNodes + 1;
