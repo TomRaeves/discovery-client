@@ -51,7 +51,6 @@ public class UDPMultiReceiveHandler extends Thread{
     }
 
     //onDataReceived and handleData is point 5a of Discovery and Bootstrap
-
     private void onDataReceived(DatagramPacket packet) {
         InetAddress address = packet.getAddress();
         String data = new String(packet.getData(), 0, packet.getLength());

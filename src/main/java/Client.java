@@ -2,6 +2,8 @@ import org.w3c.dom.events.EventException;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Client {
@@ -14,6 +16,7 @@ public class Client {
     private static final String multicastAddress = "225.6.7.8"; //Dit moet nog specifiek worden
 
     private static int amountOtherNodes = -1;
+    private static ArrayList<Integer> nodes;
 
     private static int previousNodeID = -1;
     private static int currentNodeID= -1;
@@ -174,13 +177,13 @@ public class Client {
     private static void sendMultiCast(String message, InetAddress address){  //This is point 1 of Discovery and Bootstrap
         System.out.println("Sending multicast: ["+address+"]: "+message);
         if (message != null) {
-            MulticastSocket UDPSocket = null; //create new socket
+            MulticastSocket UDPSocket = null; //creation of a new multicast socket
             try {
                 UDPSocket = new MulticastSocket();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            byte[] buffer = message.getBytes();
+            byte[] buffer = message.getBytes(); //here we put every byte of the message into the buffer
             DatagramPacket packet = new DatagramPacket(buffer,buffer.length, address, Client.multiCastPort);
             try {
                 if (UDPSocket != null) {
@@ -189,7 +192,7 @@ public class Client {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (UDPSocket != null) {
+            if (UDPSocket != null) { //after the message is sent we close the UDP socket again
                 UDPSocket.close();
             }
         }
@@ -220,7 +223,6 @@ public class Client {
     }
 
     //this is point 5c-d of Discovery and Bootstrap
-
     public static void update(int id, InetAddress hostAddress) {
         Client.amountOtherNodes = Client.amountOtherNodes + 1;
         System.out.println("New node detected with hash: "+id+" , other nodes on network: " + Client.amountOtherNodes);
@@ -265,6 +267,44 @@ public class Client {
         System.out.println("Previous ID: " + Client.previousNodeID + " || Current ID: "+Client.currentNodeID+" || Next ID: " + Client.nextNodeID);
         System.out.println("Give a command: <help> for a list of all commands");
     }
+
+    /*
+    public static void update(int id, InetAddress hostAddress){
+        nodes.add(id);
+        System.out.println(nodes);
+        System.out.println("Sorting nodes through their ID's...");
+        Collections.sort(nodes);
+        System.out.println(nodes);
+
+        if(nodes.size()==2){
+            nextNodeID=id;
+            previousNodeID=id;
+        }
+        else{
+            for (int i = 0; i < nodes.size(); i++) {
+                if(nodes.get(i)==currentNodeID){
+                    if(i==0){
+                        previousNodeID=nodes.get(nodes.size());
+                        nextNodeID=nodes.get(1);
+                    }
+                    else if(i==nodes.size()-1){
+                        previousNodeID=nodes.get(nodes.size()-2);
+                        nextNodeID=nodes.get(0);
+                    }
+                    else{ // normale werking
+                        nextNodeID=nodes.get(i+1);
+                        previousNodeID= nodes.get(i-1);
+                    }
+                }
+            }
+        }
+        System.out.println("----------------------------------------------------");
+        System.out.println("Other nodes in the network: "+(nodes.size()-1));
+        System.out.println("Previous ID: " + previousNodeID + " || Current ID: "+currentNodeID+" || Next ID: " + nextNodeID);
+        System.out.println("Give a command: <help> for a list of all commands");
+        System.out.println("----------------------------------------------------");
+    }*/
+
     public static void updateInitial(String message) {
         //VB message: 3
         //VB message: 3, Previous ID: 68465, Next ID: 321846
